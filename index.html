@@ -1430,7 +1430,6 @@
         function apiPost(body) {
             return fetch(API_URL, {
                 method: 'POST',
-                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             })
@@ -1577,7 +1576,7 @@
             setErr('aLinkCat', 'eALinkCat', !catId); setErr('aLinkTitle', 'eALinkTitle', !title); setErr('aLinkUrl', 'eALinkUrl', !vUrl);
             if (!catId || !title || !vUrl) return;
             setML('aLinkBtn', 'aLinkSp', 'aLinkTxt', true, 'Saving…');
-            apiPost({ action: 'saveLink', categoryId: catId, title: title, link: url })
+            apiGet({ action: 'saveLink', categoryId: catId, title: title, link: url })
                 .then(function () {
                     setML('aLinkBtn', 'aLinkSp', 'aLinkTxt', false, 'Save Link');
                     closeModal('oAddLink'); S.linksLoaded = false; loadLinks();
@@ -1618,7 +1617,7 @@
             setErr('eLinkCat', 'eELinkCat', !catId); setErr('eLinkTitle', 'eELinkTitle', !title); setErr('eLinkUrl', 'eELinkUrl', !vUrl);
             if (!catId || !title || !vUrl) return;
             setML('eLinkBtn', 'eLinkSp', 'eLinkTxt', true, 'Saving…');
-            apiPost({ action: 'updateLink', rowIndex: row, categoryId: catId, title: title, link: url })
+            apiGet({ action: 'updateLink', rowIndex: row, categoryId: catId, title: title, link: url })
                 .then(function () {
                     setML('eLinkBtn', 'eLinkSp', 'eLinkTxt', false, 'Save Changes');
                     closeModal('oEditLink'); S.linksLoaded = false; loadLinks();
@@ -1642,7 +1641,7 @@
         function confirmDeleteLink() {
             var row = document.getElementById('dLinkRow').value;
             setML('dLinkBtn', 'dLinkSp', 'dLinkTxt', true, 'Deleting…');
-            apiPost({ action: 'deleteLink', rowIndex: row })
+            apiGet({ action: 'deleteLink', rowIndex: row })
                 .then(function () {
                     setML('dLinkBtn', 'dLinkSp', 'dLinkTxt', false, 'Delete');
                     closeModal('oDelLink'); S.linksLoaded = false; loadLinks();
@@ -1707,7 +1706,7 @@
             setErr('aCatName', 'eACatName', !name);
             if (!name) return;
             setML('aCatBtn', 'aCatSp', 'aCatTxt', true, 'Saving…');
-            apiPost({ action: 'saveCategory', name: name })
+            apiGet({ action: 'saveCategory', name: name })
                 .then(function () {
                     setML('aCatBtn', 'aCatSp', 'aCatTxt', false, 'Save Category');
                     closeModal('oAddCat'); S.catsLoaded = false; S.linksLoaded = false; loadCategories();
@@ -1736,7 +1735,7 @@
             setErr('eCatName', 'eECatName', !name);
             if (!name) return;
             setML('eCatBtn', 'eCatSp', 'eCatTxt', true, 'Saving…');
-            apiPost({ action: 'updateCategory', rowIndex: row, name: name })
+            apiGet({ action: 'updateCategory', rowIndex: row, name: name })
                 .then(function () {
                     setML('eCatBtn', 'eCatSp', 'eCatTxt', false, 'Save Changes');
                     closeModal('oEditCat'); S.catsLoaded = false; S.linksLoaded = false; loadCategories();
@@ -1760,7 +1759,7 @@
         function confirmDeleteCategory() {
             var row = document.getElementById('dCatRow').value;
             setML('dCatBtn', 'dCatSp', 'dCatTxt', true, 'Deleting…');
-            apiPost({ action: 'deleteCategory', rowIndex: row })
+            apiGet({ action: 'deleteCategory', rowIndex: row })
                 .then(function () {
                     setML('dCatBtn', 'dCatSp', 'dCatTxt', false, 'Delete');
                     closeModal('oDelCat'); S.catsLoaded = false; S.linksLoaded = false; loadCategories();
