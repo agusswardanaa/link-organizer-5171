@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Directory</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --white: #ffffff;
+            --off-white: #f4f6fb;
+            --blue-dark: #1a3a6b;
+            --blue: #2563eb;
+            --blue-mid: #3b82f6;
+            --blue-light: #dbeafe;
+            --blue-pale: #eff6ff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --border-mid: #cbd5e1;
+            --success: #16a34a;
+            --error: #ef4444;
+            --error-bg: #fef2f2;
+            --radius: 12px;
+            --nav-h: 64px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse 55% 45% at 10% 0%, rgba(37, 99, 235, .06) 0%, transparent 60%),
+                radial-gradient(ellipse 45% 55% at 90% 100%, rgba(37, 99, 235, .05) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── NAV ──────────────────────────────────────── */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            height: var(--nav-h);
+            background: rgba(255, 255, 255, .93);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.15rem;
+            color: var(--blue-dark);
+            margin-right: 36px;
+            cursor: pointer;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .nav-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo svg {
+            width: 17px;
+            height: 17px;
+            color: #fff;
+        }
+
+        .nav-tabs {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .nav-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: .87rem;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            transition: color .15s, background .15s;
+            white-space: nowrap;
+        }
+
+        .nav-tab svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        .nav-tab:hover {
+            color: var(--blue);
+            background: var(--blue-pale);
+        }
+
+        .nav-tab.active {
+            color: var(--blue);
+            background: var(--blue-pale);
+            font-weight: 600;
+        }
+
+        /* ── MAIN ─────────────────────────────────────── */
+        .main {
+            position: relative;
+            z-index: 1;
+            padding: 36px 28px 80px;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: viewIn .28s cubic-bezier(.22, 1, .36, 1) both;
+        }
+
+        @keyframes viewIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── TOPBAR ───────────────────────────────────── */
+        .topbar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: 3px 9px;
+            border-radius: 999px;
+            margin-bottom: 8px;
+        }
+
+        .page-badge span {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--blue);
+            display: inline-block;
+        }
+
+        .page-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.85rem;
+            font-weight: 400;
+            color: var(--blue-dark);
+            letter-spacing: -.02em;
+        }
+
+        .page-sub {
+            font-size: .86rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
+            box-shadow: 0 3px 12px rgba(37, 99, 235, .28);
+            white-space: nowrap;
+            transition: opacity .15s, transform .12s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-add::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .11), transparent 60%);
+        }
+
+        .btn-add svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        .btn-add:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+        .btn-add:active {
+            transform: translateY(0);
+        }
+
+        /* ── FILTER BAR ───────────────────────────────── */
+        .filterbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .filterbar .iw {
+            position: relative;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .filterbar .sw {
+            position: relative;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .filterbar .iw svg,
+        .filterbar .sw svg.icon {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--blue-mid);
+            pointer-events: none;
+            width: 14px;
+            height: 14px;
+        }
+
+        .filterbar input,
+        .filterbar select {
+            width: 100%;
+            padding: 9px 11px 9px 33px;
+            border: 1.5px solid var(--border-mid);
+            border-radius: var(--radius);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .87rem;
+            color: var(--text);
+            background: var(--white);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .filterbar input::placeholder {
+            color: #94a3b8;
+        }
+
+        .filterbar input:focus,
+        .filterbar select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-light);
+        }
+
+        .filterbar .sw svg.arr {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+            width: 13px;
+            height: 13px;
+        }
+
+        .filterbar select {
+            padding-right: 28px;
+            cursor: pointer;
+        }
+
+        .btn-ghost {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 9px 14px;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border-mid);
+            background: var(--white);
+            color: var(--muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .84rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: border-color .15s, color .15s, background .15s;
+        }
+
+        .btn-ghost svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: var(--blue-pale);
+        }
+
+        .stats {
+            font-size: .79rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .stats strong {
+            color: var(--blue-dark);
+        }
+
+        /* ── TABLE ────────────────────────────────────── */
+        .tcard {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(37, 99, 235, .08);
+            overflow: hidden;
+        }
+
+        .tscroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .875rem;
+        }
+
+        thead tr {
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+        }
+
+        thead th {
+            padding: 13px 16px;
+            text-align: left;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .88);
+            white-space: nowrap;
+        }
+
+        thead th.th-r {
+            text-align: right;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background .12s;
+            animation: fadeRow .2s ease both;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--blue-pale);
+        }
+
+        @keyframes fadeRow {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        tbody td {
+            padding: 12px 16px;
+            vertical-align: middle;
+        }
+
+        .cell-id {
+            font-size: .74rem;
+            color: var(--muted);
+            font-weight: 600;
+            width: 48px;
+        }
+
+        .cell-title {
+            font-weight: 500;
+        }
+
+        .cat-pill {
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: 999px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: .72rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .cell-link a {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: .81rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            max-width: 260px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: color .12s;
+        }
+
+        .cell-link a:hover {
+            color: var(--blue-dark);
+            text-decoration: underline;
+        }
+
+        .cell-link a svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+        }
+
+        .cell-actions {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .btn-edit,
+        .btn-del {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid;
+            transition: all .13s;
+        }
+
+        .btn-edit svg,
+        .btn-del svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .btn-edit {
+            background: var(--blue-pale);
+            color: var(--blue);
+            border-color: var(--blue-light);
+        }
+
+        .btn-edit:hover {
+            background: var(--blue-light);
+            border-color: var(--blue);
+        }
+
+        .btn-del {
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: #fecaca;
+            margin-left: 6px;
+        }
+
+        .btn-del:hover {
+            background: #fee2e2;
+            border-color: var(--error);
+        }
+
+        .state-row td {
+            text-align: center;
+            padding: 56px 24px;
+            color: var(--muted);
+        }
+
+        .state-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .state-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 3px;
+        }
+
+        .state-sub {
+            font-size: .81rem;
+        }
+
+        .skeleton {
+            height: 13px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: -200% 0;
+            }
+        }
+
+        /* ── MODAL ────────────────────────────────────── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(15, 23, 42, .42);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s;
+        }
+
+        .overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .16);
+            width: 100%;
+            max-width: 460px;
+            overflow: hidden;
+            transform: translateY(18px) scale(.97);
+            transition: transform .24s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .overlay.open .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-hd {
+            padding: 20px 24px 17px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.25rem;
+            color: var(--blue-dark);
+            font-weight: 400;
+        }
+
+        .modal-x {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            border: none;
+            background: var(--off-white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            transition: background .13s, color .13s;
+        }
+
+        .modal-x:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .modal-x svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .modal-body {
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .modal-ft {
+            padding: 15px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 9px;
+            justify-content: flex-end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: .74rem;
+            font-weight: 700;
+            color: var(--blue-dark);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .fi {
+            position: relative;
+        }
+
+        .fi svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--blue-mid);
+            pointer-events: none;
+            width: 15px;
+            height: 15px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 11px 11px 11px 37px;
+            border: 1.5px solid var(--border-mid);
+            border-radius: var(--radius);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .92rem;
+            color: var(--text);
+            background: var(--white);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color .15s, box-shadow .15s, background .15s;
+        }
+
+        .field input::placeholder {
+            color: #94a3b8;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-light);
+            background: var(--blue-pale);
+        }
+
+        .field input.err,
+        .field select.err {
+            border-color: var(--error);
+        }
+
+        .field input.err:focus,
+        .field select.err:focus {
+            box-shadow: 0 0 0 3px #fee2e2;
+        }
+
+        .fs {
+            position: relative;
+        }
+
+        .fs svg.icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--blue-mid);
+            pointer-events: none;
+            width: 15px;
+            height: 15px;
+        }
+
+        .fs svg.arr {
+            position: absolute;
+            right: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+            width: 13px;
+            height: 13px;
+        }
+
+        .field select {
+            padding-right: 32px;
+            cursor: pointer;
+        }
+
+        .err-msg {
+            font-size: .74rem;
+            color: var(--error);
+            display: none;
+        }
+
+        .btn-cancel {
+            padding: 9px 18px;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border-mid);
+            background: var(--white);
+            color: var(--muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .87rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color .13s, color .13s;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--blue-mid);
+            color: var(--text);
+        }
+
+        .btn-save {
+            padding: 9px 22px;
+            border-radius: var(--radius);
+            border: none;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .87rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, .26);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity .14s, transform .12s;
+        }
+
+        .btn-save:hover:not(:disabled) {
+            opacity: .88;
+            transform: translateY(-1px);
+        }
+
+        .btn-save:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn-danger {
+            padding: 9px 22px;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--error);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .87rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 3px 10px rgba(239, 68, 68, .26);
+            transition: opacity .14s, transform .12s;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            opacity: .88;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .del-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: var(--error-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .del-icon svg {
+            width: 25px;
+            height: 25px;
+            color: var(--error);
+        }
+
+        .del-msg {
+            text-align: center;
+            font-size: .9rem;
+            color: var(--muted);
+        }
+
+        .del-msg strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 5px;
+            font-size: .95rem;
+        }
+
+        /* ── CONFIG BANNER ────────────────────────────── */
+        .config-banner {
+            background: #fffbeb;
+            border: 1.5px solid #fde68a;
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+            font-size: .85rem;
+            color: #92400e;
+        }
+
+        .config-banner svg {
+            width: 18px;
+            height: 18px;
+            color: #d97706;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .config-banner strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .config-banner code {
+            background: #fef3c7;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: .82rem;
+            word-break: break-all;
+        }
+
+        /* ── TOAST ────────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .11);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .87rem;
+            font-weight: 500;
+            color: var(--text);
+            min-width: 230px;
+            border-left: 4px solid var(--success);
+            transition: transform .38s cubic-bezier(.22, 1, .36, 1), opacity .3s;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.is-error {
+            border-color: var(--error);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ NAV ════════════════════════════════════════════════ -->
+    <nav class="nav">
+        <div class="nav-brand" onclick="navigate('links')">
+            <div class="nav-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                </svg>
+            </div>
+            LinkDir
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" id="nav-links" onclick="navigate('links')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+                Links
+            </button>
+            <button class="nav-tab" id="nav-categories" onclick="navigate('categories')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                </svg>
+                Categories
+            </button>
+        </div>
+    </nav>
+
+    <!-- ══ MAIN ════════════════════════════════════════════════ -->
+    <main class="main">
+
+        <!-- ▸ LINKS VIEW ──────────────────────────────────────── -->
+        <div class="view active" id="view-links">
+            <div class="topbar">
+                <div>
+                    <div class="page-badge"><span></span>Google Sheets</div>
+                    <h1 class="page-title">Link Directory</h1>
+                    <p class="page-sub">Browse, search, and manage all saved links.</p>
+                </div>
+                <button class="btn-add" onclick="openAddLink()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Add Link
+                </button>
+            </div>
+
+            <div class="filterbar">
+                <div class="iw">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                    <input type="text" id="linkSearch" placeholder="Search title or URL…" oninput="filterLinks()" />
+                </div>
+                <div class="sw">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.8" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                    </svg>
+                    <select id="linkCatFilter" onchange="filterLinks()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <svg class="arr" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </div>
+                <button class="btn-ghost" onclick="resetLinkFilters()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    Reset
+                </button>
+            </div>
+
+            <div class="stats" id="linkStats">Loading…</div>
+            <div class="tcard">
+                <div class="tscroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category</th>
+                                <th>Title</th>
+                                <th>URL</th>
+                                <th class="th-r">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="linkTbody">
+                            <tr>
+                                <td>
+                                    <div class="skeleton" style="width:26px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:72px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:148px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:190px"></div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="skeleton" style="width:26px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:90px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:128px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:210px"></div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="skeleton" style="width:26px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:64px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:162px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:176px"></div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ▸ CATEGORIES VIEW ────────────────────────────────── -->
+        <div class="view" id="view-categories">
+            <div class="topbar">
+                <div>
+                    <div class="page-badge"><span></span>Google Sheets</div>
+                    <h1 class="page-title">Categories</h1>
+                    <p class="page-sub">Manage all link categories.</p>
+                </div>
+                <button class="btn-add" onclick="openAddCategory()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Add Category
+                </button>
+            </div>
+
+            <div class="filterbar">
+                <div class="iw">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                    <input type="text" id="catSearch" placeholder="Search categories…" oninput="filterCategories()" />
+                </div>
+                <button class="btn-ghost" onclick="resetCatFilters()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    Reset
+                </button>
+            </div>
+
+            <div class="stats" id="catStats">Loading…</div>
+            <div class="tcard">
+                <div class="tscroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category Name</th>
+                                <th class="th-r">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="catTbody">
+                            <tr>
+                                <td>
+                                    <div class="skeleton" style="width:26px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:130px"></div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="skeleton" style="width:26px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:108px"></div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="skeleton" style="width:26px"></div>
+                                </td>
+                                <td>
+                                    <div class="skeleton" style="width:152px"></div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ══ MODALS ═════════════════════════════════════════════ -->
+
+    <!-- Add Link -->
+    <div class="overlay" id="oAddLink" onclick="closeModal('oAddLink')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hd"><span class="modal-title">Add New Link</span><button class="modal-x"
+                    onclick="closeModal('oAddLink')"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button></div>
+            <div class="modal-body">
+                <div class="field"><label>Category</label>
+                    <div class="fs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                        </svg>
+                        <select id="aLinkCat">
+                            <option value="">— Select a category —</option>
+                        </select>
+                        <svg class="arr" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </div>
+                    <span class="err-msg" id="eALinkCat">Please select a category.</span>
+                </div>
+                <div class="field"><label>Title</label>
+                    <div class="fi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                        </svg>
+                        <input type="text" id="aLinkTitle" placeholder="e.g. GitHub, Google…" autocomplete="off" />
+                    </div>
+                    <span class="err-msg" id="eALinkTitle">Please enter a title.</span>
+                </div>
+                <div class="field"><label>URL</label>
+                    <div class="fi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                        <input type="url" id="aLinkUrl" placeholder="https://example.com" autocomplete="off" />
+                    </div>
+                    <span class="err-msg" id="eALinkUrl">Please enter a valid URL (https://…).</span>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button class="btn-cancel" onclick="closeModal('oAddLink')">Cancel</button>
+                <button class="btn-save" id="aLinkBtn" onclick="submitAddLink()"><span class="btn-spinner"
+                        id="aLinkSp"></span><span id="aLinkTxt">Save Link</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category -->
+    <div class="overlay" id="oAddCat" onclick="closeModal('oAddCat')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hd"><span class="modal-title">Add Category</span><button class="modal-x"
+                    onclick="closeModal('oAddCat')"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button></div>
+            <div class="modal-body">
+                <div class="field"><label>Category Name</label>
+                    <div class="fi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                        </svg>
+                        <input type="text" id="aCatName" placeholder="e.g. Technology, Food…" autocomplete="off" />
+                    </div>
+                    <span class="err-msg" id="eACatName">Please enter a category name.</span>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button class="btn-cancel" onclick="closeModal('oAddCat')">Cancel</button>
+                <button class="btn-save" id="aCatBtn" onclick="submitAddCategory()"><span class="btn-spinner"
+                        id="aCatSp"></span><span id="aCatTxt">Save Category</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Link -->
+    <div class="overlay" id="oEditLink" onclick="closeModal('oEditLink')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hd"><span class="modal-title">Edit Link</span><button class="modal-x"
+                    onclick="closeModal('oEditLink')"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="eLinkRow" />
+                <div class="field"><label>Category</label>
+                    <div class="fs"><svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                        </svg>
+                        <select id="eLinkCat">
+                            <option value="">— Select —</option>
+                        </select>
+                        <svg class="arr" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </div>
+                    <span class="err-msg" id="eELinkCat">Please select a category.</span>
+                </div>
+                <div class="field"><label>Title</label>
+                    <div class="fi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                        </svg>
+                        <input type="text" id="eLinkTitle" placeholder="Title" />
+                    </div>
+                    <span class="err-msg" id="eELinkTitle">Please enter a title.</span>
+                </div>
+                <div class="field"><label>URL</label>
+                    <div class="fi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                        <input type="url" id="eLinkUrl" placeholder="https://…" />
+                    </div>
+                    <span class="err-msg" id="eELinkUrl">Please enter a valid URL.</span>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button class="btn-cancel" onclick="closeModal('oEditLink')">Cancel</button>
+                <button class="btn-save" id="eLinkBtn" onclick="saveEditLink()"><span class="btn-spinner"
+                        id="eLinkSp"></span><span id="eLinkTxt">Save Changes</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Link -->
+    <div class="overlay" id="oDelLink" onclick="closeModal('oDelLink')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hd"><span class="modal-title">Delete Link</span><button class="modal-x"
+                    onclick="closeModal('oDelLink')"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button></div>
+            <div class="modal-body">
+                <div class="del-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.8" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg></div>
+                <div class="del-msg"><strong>Are you sure?</strong>You're about to delete <strong id="dLinkName">"this
+                        link"</strong>. This cannot be undone.</div>
+                <input type="hidden" id="dLinkRow" />
+            </div>
+            <div class="modal-ft">
+                <button class="btn-cancel" onclick="closeModal('oDelLink')">Cancel</button>
+                <button class="btn-danger" id="dLinkBtn" onclick="confirmDeleteLink()"><span class="btn-spinner"
+                        id="dLinkSp"></span><span id="dLinkTxt">Delete</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Category -->
+    <div class="overlay" id="oEditCat" onclick="closeModal('oEditCat')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hd"><span class="modal-title">Edit Category</span><button class="modal-x"
+                    onclick="closeModal('oEditCat')"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="eCatRow" />
+                <div class="field"><label>Category Name</label>
+                    <div class="fi"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                        </svg>
+                        <input type="text" id="eCatName" placeholder="Category name" />
+                    </div>
+                    <span class="err-msg" id="eECatName">Please enter a name.</span>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button class="btn-cancel" onclick="closeModal('oEditCat')">Cancel</button>
+                <button class="btn-save" id="eCatBtn" onclick="saveEditCategory()"><span class="btn-spinner"
+                        id="eCatSp"></span><span id="eCatTxt">Save Changes</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Category -->
+    <div class="overlay" id="oDelCat" onclick="closeModal('oDelCat')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hd"><span class="modal-title">Delete Category</span><button class="modal-x"
+                    onclick="closeModal('oDelCat')"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg></button></div>
+            <div class="modal-body">
+                <div class="del-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.8" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg></div>
+                <div class="del-msg"><strong>Are you sure?</strong>You're about to delete <strong id="dCatName">"this
+                        category"</strong>. This cannot be undone.</div>
+                <input type="hidden" id="dCatRow" />
+            </div>
+            <div class="modal-ft">
+                <button class="btn-cancel" onclick="closeModal('oDelCat')">Cancel</button>
+                <button class="btn-danger" id="dCatBtn" onclick="confirmDeleteCategory()"><span class="btn-spinner"
+                        id="dCatSp"></span><span id="dCatTxt">Delete</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg"></span></div>
+
+    <script>
+        // ══════════════════════════════════════════════════════
+        //  CONFIG — paste your Apps Script Web App URL here
+        // ══════════════════════════════════════════════════════
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwfRVkKSc8Wl1T77xgStP8EV1PT6pNEgyWuP_dfxR6pmdrRB4QKoj-QaVHqLepZaqnS4A/exec';
+
+        // ══════════════════════════════════════════════════════
+        //  API HELPERS
+        // ══════════════════════════════════════════════════════
+        function apiGet(action) {
+            return fetch(API_URL + '?action=' + action)
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d.ok) throw new Error(d.error || 'Request failed');
+                    return d;
+                });
+        }
+
+        function apiPost(body) {
+            return fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d.ok) throw new Error(d.error || 'Request failed');
+                    return d;
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  STATE
+        // ══════════════════════════════════════════════════════
+        var S = {
+            view: 'links',
+            links: [],
+            categories: [],
+            catMap: {},
+            linksLoaded: false,
+            catsLoaded: false
+        };
+
+        // ══════════════════════════════════════════════════════
+        //  NAV / ROUTER
+        // ══════════════════════════════════════════════════════
+        function navigate(v) {
+            if (S.view === v) return;
+            document.getElementById('view-' + S.view).classList.remove('active');
+            document.getElementById('nav-' + S.view).classList.remove('active');
+            S.view = v;
+            var el = document.getElementById('view-' + v);
+            el.classList.remove('active'); void el.offsetWidth; el.classList.add('active');
+            document.getElementById('nav-' + v).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (v === 'links' && !S.linksLoaded) loadLinks();
+            if (v === 'categories' && !S.catsLoaded) loadCategories();
+        }
+
+        window.onload = function () {
+            if (!API_URL || API_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+                showConfigWarning();
+            } else {
+                loadLinks();
+            }
+        };
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape')
+                ['oAddLink', 'oAddCat', 'oEditLink', 'oDelLink', 'oEditCat', 'oDelCat'].forEach(closeModal);
+        });
+
+        function showConfigWarning() {
+            var banner = '<div class="config-banner">' +
+                '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>' +
+                '<div><strong>API URL not configured</strong>Open <code>index.html</code> and set <code>API_URL</code> to your Apps Script Web App URL, then re-deploy to Vercel.</div>' +
+                '</div>';
+            document.querySelector('#view-links .topbar').insertAdjacentHTML('afterend', banner);
+            document.querySelector('#view-categories .topbar').insertAdjacentHTML('afterend', banner.replace('id="', 'id="c-'));
+            document.getElementById('linkStats').textContent = '';
+            document.getElementById('catStats').textContent = '';
+            document.getElementById('linkTbody').innerHTML = stateRow(5, '⚙️', 'Not configured', 'Set API_URL first.');
+            document.getElementById('catTbody').innerHTML = stateRow(3, '⚙️', 'Not configured', 'Set API_URL first.');
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  LINKS TABLE
+        // ══════════════════════════════════════════════════════
+        function loadLinks() {
+            apiGet('getLinks')
+                .then(function (d) {
+                    S.catMap = {}; S.categories = d.categories;
+                    d.categories.forEach(function (c) { S.catMap[String(c.id)] = c.name; });
+                    S.links = d.links; S.linksLoaded = true;
+                    buildLinkCatFilter(d.categories);
+                    renderLinks(S.links);
+                })
+                .catch(function (e) {
+                    document.getElementById('linkTbody').innerHTML = stateRow(5, '⚠️', 'Error loading data', esc(e.message));
+                    document.getElementById('linkStats').textContent = 'Could not load links.';
+                });
+        }
+
+        function buildLinkCatFilter(cats) {
+            var sel = document.getElementById('linkCatFilter');
+            while (sel.options.length > 1) sel.remove(1);
+            cats.forEach(function (c) { addOpt(sel, c.id, c.name); });
+        }
+
+        function filterLinks() {
+            var q = document.getElementById('linkSearch').value.trim().toLowerCase();
+            var c = document.getElementById('linkCatFilter').value;
+            renderLinks(S.links.filter(function (r) {
+                return (!c || String(r.categoryId) === String(c)) &&
+                    (!q || r.title.toLowerCase().includes(q) || r.link.toLowerCase().includes(q));
+            }));
+        }
+
+        function resetLinkFilters() {
+            document.getElementById('linkSearch').value = '';
+            document.getElementById('linkCatFilter').value = '';
+            renderLinks(S.links);
+        }
+
+        function renderLinks(rows) {
+            document.getElementById('linkStats').innerHTML =
+                'Showing <strong>' + rows.length + '</strong> of <strong>' + S.links.length + '</strong> links';
+            var tb = document.getElementById('linkTbody');
+            if (!rows.length) { tb.innerHTML = stateRow(5, '🔍', 'No links found', 'Try adjusting your search or filter.'); return; }
+            tb.innerHTML = rows.map(function (r, i) {
+                var cat = S.catMap[String(r.categoryId)] || 'ID ' + r.categoryId;
+                return '<tr style="animation-delay:' + (i * 20) + 'ms">' +
+                    '<td class="cell-id">#' + esc(r.id) + '</td>' +
+                    '<td><span class="cat-pill">' + esc(cat) + '</span></td>' +
+                    '<td class="cell-title">' + esc(r.title) + '</td>' +
+                    '<td class="cell-link"><a href="' + esc(r.link) + '" target="_blank" rel="noopener">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>' +
+                    esc(r.link) + '</a></td>' +
+                    '<td class="cell-actions">' +
+                    '<button class="btn-edit" onclick="openEditLink(\'' + esc(r.rowIndex) + '\')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>Edit</button>' +
+                    '<button class="btn-del"  onclick="openDeleteLink(\'' + esc(r.rowIndex) + '\',\'' + esc(r.title) + '\')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>Delete</button>' +
+                    '</td></tr>';
+            }).join('');
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  ADD LINK
+        // ══════════════════════════════════════════════════════
+        function openAddLink() {
+            var sel = document.getElementById('aLinkCat');
+            sel.innerHTML = '<option value="">— Select a category —</option>';
+            S.categories.forEach(function (c) { addOpt(sel, c.id, c.name); });
+            document.getElementById('aLinkTitle').value = '';
+            document.getElementById('aLinkUrl').value = '';
+            clearErr('aLinkCat', 'eALinkCat'); clearErr('aLinkTitle', 'eALinkTitle'); clearErr('aLinkUrl', 'eALinkUrl');
+            openModal('oAddLink');
+            setTimeout(function () { document.getElementById('aLinkTitle').focus(); }, 260);
+        }
+
+        function submitAddLink() {
+            var catId = document.getElementById('aLinkCat').value;
+            var title = document.getElementById('aLinkTitle').value.trim();
+            var url = document.getElementById('aLinkUrl').value.trim();
+            var vUrl = url && (url.startsWith('http://') || url.startsWith('https://'));
+            setErr('aLinkCat', 'eALinkCat', !catId); setErr('aLinkTitle', 'eALinkTitle', !title); setErr('aLinkUrl', 'eALinkUrl', !vUrl);
+            if (!catId || !title || !vUrl) return;
+            setML('aLinkBtn', 'aLinkSp', 'aLinkTxt', true, 'Saving…');
+            apiPost({ action: 'saveLink', categoryId: catId, title: title, link: url })
+                .then(function () {
+                    setML('aLinkBtn', 'aLinkSp', 'aLinkTxt', false, 'Save Link');
+                    closeModal('oAddLink'); S.linksLoaded = false; loadLinks();
+                    showToast('Link "' + title + '" saved!');
+                })
+                .catch(function (e) {
+                    setML('aLinkBtn', 'aLinkSp', 'aLinkTxt', false, 'Save Link');
+                    showToast(e.message || 'Save failed.', true);
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  EDIT LINK
+        // ══════════════════════════════════════════════════════
+        function openEditLink(rowIndex) {
+            var r = S.links.find(function (x) { return String(x.rowIndex) === String(rowIndex); });
+            if (!r) return;
+            document.getElementById('eLinkRow').value = rowIndex;
+            document.getElementById('eLinkTitle').value = r.title;
+            document.getElementById('eLinkUrl').value = r.link;
+            var sel = document.getElementById('eLinkCat');
+            sel.innerHTML = '<option value="">— Select —</option>';
+            S.categories.forEach(function (c) {
+                var o = document.createElement('option'); o.value = c.id; o.textContent = c.name;
+                if (String(c.id) === String(r.categoryId)) o.selected = true;
+                sel.appendChild(o);
+            });
+            clearErr('eLinkCat', 'eELinkCat'); clearErr('eLinkTitle', 'eELinkTitle'); clearErr('eLinkUrl', 'eELinkUrl');
+            openModal('oEditLink');
+        }
+
+        function saveEditLink() {
+            var row = document.getElementById('eLinkRow').value;
+            var catId = document.getElementById('eLinkCat').value;
+            var title = document.getElementById('eLinkTitle').value.trim();
+            var url = document.getElementById('eLinkUrl').value.trim();
+            var vUrl = url && (url.startsWith('http://') || url.startsWith('https://'));
+            setErr('eLinkCat', 'eELinkCat', !catId); setErr('eLinkTitle', 'eELinkTitle', !title); setErr('eLinkUrl', 'eELinkUrl', !vUrl);
+            if (!catId || !title || !vUrl) return;
+            setML('eLinkBtn', 'eLinkSp', 'eLinkTxt', true, 'Saving…');
+            apiPost({ action: 'updateLink', rowIndex: row, categoryId: catId, title: title, link: url })
+                .then(function () {
+                    setML('eLinkBtn', 'eLinkSp', 'eLinkTxt', false, 'Save Changes');
+                    closeModal('oEditLink'); S.linksLoaded = false; loadLinks();
+                    showToast('Link updated!');
+                })
+                .catch(function (e) {
+                    setML('eLinkBtn', 'eLinkSp', 'eLinkTxt', false, 'Save Changes');
+                    showToast(e.message || 'Update failed.', true);
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  DELETE LINK
+        // ══════════════════════════════════════════════════════
+        function openDeleteLink(rowIndex, title) {
+            document.getElementById('dLinkRow').value = rowIndex;
+            document.getElementById('dLinkName').textContent = '"' + title + '"';
+            openModal('oDelLink');
+        }
+
+        function confirmDeleteLink() {
+            var row = document.getElementById('dLinkRow').value;
+            setML('dLinkBtn', 'dLinkSp', 'dLinkTxt', true, 'Deleting…');
+            apiPost({ action: 'deleteLink', rowIndex: row })
+                .then(function () {
+                    setML('dLinkBtn', 'dLinkSp', 'dLinkTxt', false, 'Delete');
+                    closeModal('oDelLink'); S.linksLoaded = false; loadLinks();
+                    showToast('Link deleted.');
+                })
+                .catch(function (e) {
+                    setML('dLinkBtn', 'dLinkSp', 'dLinkTxt', false, 'Delete');
+                    showToast(e.message || 'Delete failed.', true);
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  CATEGORIES TABLE
+        // ══════════════════════════════════════════════════════
+        function loadCategories() {
+            apiGet('getCategories')
+                .then(function (d) {
+                    S.categories = d.categories; S.catsLoaded = true;
+                    renderCategories(d.categories);
+                })
+                .catch(function (e) {
+                    document.getElementById('catTbody').innerHTML = stateRow(3, '⚠️', 'Error loading data', esc(e.message));
+                    document.getElementById('catStats').textContent = 'Could not load categories.';
+                });
+        }
+
+        function filterCategories() {
+            var q = document.getElementById('catSearch').value.trim().toLowerCase();
+            renderCategories(S.categories.filter(function (c) { return !q || c.name.toLowerCase().includes(q); }));
+        }
+
+        function resetCatFilters() { document.getElementById('catSearch').value = ''; renderCategories(S.categories); }
+
+        function renderCategories(rows) {
+            document.getElementById('catStats').innerHTML =
+                'Showing <strong>' + rows.length + '</strong> of <strong>' + S.categories.length + '</strong> categories';
+            var tb = document.getElementById('catTbody');
+            if (!rows.length) { tb.innerHTML = stateRow(3, '🔍', 'No categories found', 'Try adjusting your search.'); return; }
+            tb.innerHTML = rows.map(function (c, i) {
+                return '<tr style="animation-delay:' + (i * 20) + 'ms">' +
+                    '<td class="cell-id">#' + esc(c.id) + '</td>' +
+                    '<td class="cell-title">' + esc(c.name) + '</td>' +
+                    '<td class="cell-actions">' +
+                    '<button class="btn-edit" onclick="openEditCategory(\'' + esc(c.rowIndex) + '\',\'' + esc(c.name) + '\')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>Edit</button>' +
+                    '<button class="btn-del"  onclick="openDeleteCategory(\'' + esc(c.rowIndex) + '\',\'' + esc(c.name) + '\')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>Delete</button>' +
+                    '</td></tr>';
+            }).join('');
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  ADD CATEGORY
+        // ══════════════════════════════════════════════════════
+        function openAddCategory() {
+            document.getElementById('aCatName').value = '';
+            clearErr('aCatName', 'eACatName');
+            openModal('oAddCat');
+            setTimeout(function () { document.getElementById('aCatName').focus(); }, 260);
+        }
+
+        function submitAddCategory() {
+            var name = document.getElementById('aCatName').value.trim();
+            setErr('aCatName', 'eACatName', !name);
+            if (!name) return;
+            setML('aCatBtn', 'aCatSp', 'aCatTxt', true, 'Saving…');
+            apiPost({ action: 'saveCategory', name: name })
+                .then(function () {
+                    setML('aCatBtn', 'aCatSp', 'aCatTxt', false, 'Save Category');
+                    closeModal('oAddCat'); S.catsLoaded = false; S.linksLoaded = false; loadCategories();
+                    showToast('Category "' + name + '" saved!');
+                })
+                .catch(function (e) {
+                    setML('aCatBtn', 'aCatSp', 'aCatTxt', false, 'Save Category');
+                    showToast(e.message || 'Save failed.', true);
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  EDIT CATEGORY
+        // ══════════════════════════════════════════════════════
+        function openEditCategory(rowIndex, name) {
+            document.getElementById('eCatRow').value = rowIndex;
+            document.getElementById('eCatName').value = name;
+            clearErr('eCatName', 'eECatName');
+            openModal('oEditCat');
+            setTimeout(function () { document.getElementById('eCatName').focus(); }, 260);
+        }
+
+        function saveEditCategory() {
+            var row = document.getElementById('eCatRow').value;
+            var name = document.getElementById('eCatName').value.trim();
+            setErr('eCatName', 'eECatName', !name);
+            if (!name) return;
+            setML('eCatBtn', 'eCatSp', 'eCatTxt', true, 'Saving…');
+            apiPost({ action: 'updateCategory', rowIndex: row, name: name })
+                .then(function () {
+                    setML('eCatBtn', 'eCatSp', 'eCatTxt', false, 'Save Changes');
+                    closeModal('oEditCat'); S.catsLoaded = false; S.linksLoaded = false; loadCategories();
+                    showToast('Category updated!');
+                })
+                .catch(function (e) {
+                    setML('eCatBtn', 'eCatSp', 'eCatTxt', false, 'Save Changes');
+                    showToast(e.message || 'Update failed.', true);
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  DELETE CATEGORY
+        // ══════════════════════════════════════════════════════
+        function openDeleteCategory(rowIndex, name) {
+            document.getElementById('dCatRow').value = rowIndex;
+            document.getElementById('dCatName').textContent = '"' + name + '"';
+            openModal('oDelCat');
+        }
+
+        function confirmDeleteCategory() {
+            var row = document.getElementById('dCatRow').value;
+            setML('dCatBtn', 'dCatSp', 'dCatTxt', true, 'Deleting…');
+            apiPost({ action: 'deleteCategory', rowIndex: row })
+                .then(function () {
+                    setML('dCatBtn', 'dCatSp', 'dCatTxt', false, 'Delete');
+                    closeModal('oDelCat'); S.catsLoaded = false; S.linksLoaded = false; loadCategories();
+                    showToast('Category deleted.');
+                })
+                .catch(function (e) {
+                    setML('dCatBtn', 'dCatSp', 'dCatTxt', false, 'Delete');
+                    showToast(e.message || 'Delete failed.', true);
+                });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  UTILS
+        // ══════════════════════════════════════════════════════
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+        function setML(btnId, spId, txtId, on, label) {
+            document.getElementById(btnId).disabled = on;
+            document.getElementById(spId).style.display = on ? 'block' : 'none';
+            document.getElementById(txtId).textContent = label;
+        }
+
+        function setErr(inputId, errId, show) {
+            document.getElementById(inputId).classList.toggle('err', show);
+            document.getElementById(errId).style.display = show ? 'block' : 'none';
+        }
+
+        function clearErr(inputId, errId) {
+            document.getElementById(inputId).classList.remove('err');
+            document.getElementById(errId).style.display = 'none';
+        }
+
+        function addOpt(sel, val, txt) {
+            var o = document.createElement('option'); o.value = val; o.textContent = txt; sel.appendChild(o);
+        }
+
+        function showToast(msg, isError) {
+            var t = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            document.getElementById('toastIcon').textContent = isError ? '❌' : '✅';
+            t.classList.toggle('is-error', !!isError);
+            t.classList.add('show');
+            setTimeout(function () { t.classList.remove('show'); }, 3400);
+        }
+
+        function stateRow(cols, icon, title, sub) {
+            return '<tr class="state-row"><td colspan="' + cols + '"><div class="state-icon">' + icon + '</div><div class="state-title">' + title + '</div><div class="state-sub">' + sub + '</div></td></tr>';
+        }
+
+        function esc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        document.addEventListener('input', function (e) {
+            var m = {
+                aLinkTitle: 'eALinkTitle', aLinkUrl: 'eALinkUrl', aCatName: 'eACatName',
+                eLinkTitle: 'eELinkTitle', eLinkUrl: 'eELinkUrl', eCatName: 'eECatName'
+            };
+            e.target.classList.remove('err');
+            if (m[e.target.id]) document.getElementById(m[e.target.id]).style.display = 'none';
+        });
+
+        document.addEventListener('change', function (e) {
+            var m = { aLinkCat: 'eALinkCat', eLinkCat: 'eELinkCat' };
+            if (m[e.target.id]) { e.target.classList.remove('err'); document.getElementById(m[e.target.id]).style.display = 'none'; }
+        });
+
+        document.getElementById('aCatName').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitAddCategory(); });
+        document.getElementById('eCatName').addEventListener('keydown', function (e) { if (e.key === 'Enter') saveEditCategory(); });
+    </script>
+</body>
+
+</html>
